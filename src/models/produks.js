@@ -1,9 +1,9 @@
 const db = require('../configs/db')
 
 const produks = {
-    getAll: () => {
+    getAll: (nama) => {
         return new Promise((resolve,reject)=>{
-            db.query('select * from produk',(err,result)=>{
+            db.query(`select * , produk.id as id from produk INNER JOIN categories ON produk.category_id = categories.id ORDER BY name `,(err,result)=>{
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -14,7 +14,7 @@ const produks = {
     },
     getDetail: (id) => {
         return new Promise((resolve,reject)=>{
-            db.query(`select * from produk where id = '${id}'`,(err,result)=>{
+            db.query(`select *, produk.id as id from produk inner join categories ON produk.category_id = categories.id where produk.id = '${id}'`,(err,result)=>{
                 if(err){
                     reject(new Error(err))
                 }else{

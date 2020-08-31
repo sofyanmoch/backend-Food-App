@@ -1,16 +1,15 @@
 const produksModel = require('../models/produks')
+const response = require('../helpers/response')
 
 const produks = {
     getAll: (req,res) => {
-        produksModel.getAll()
+        const nama = req.query.nama
+        produksModel.getAll(nama)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Get all produks success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     getDetail: (req,res) => {
