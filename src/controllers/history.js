@@ -1,42 +1,34 @@
 const historyModel = require('../models/history')
+const response = require('../helpers/response')
 
 const history = {
     getAll: (req,res) => {
         historyModel.getAll()
-        .then((result)=>{
-            res.json(result)
+        .then((result) => {
+            response.success(res,result,"Get all History success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     getDetail: (req,res) => {
         const id  =req.params.id_history
         historyModel.getDetail(id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Get Detail history success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     addHistory: (req,res) => {
         const body =req.body
         historyModel.addHistory(body)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Add History success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     update: (req,res) => {
@@ -44,26 +36,20 @@ const history = {
         const id = req.params.id_history
         historyModel.update(body,id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Update History success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     delete: (req,res) => {
         const id = req.params.id_history
         historyModel.delete(id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Delete history success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     }
 }

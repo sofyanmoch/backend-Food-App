@@ -13,7 +13,7 @@ const response = {
             message: message,
             success: false,
             code: 403,
-            data: [],
+            data: data,
         }
         res.json(result)
     }

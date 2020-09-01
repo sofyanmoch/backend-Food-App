@@ -1,29 +1,24 @@
 const categoryModel = require('../models/category')
+const response = require('../helpers/response')
 
 const category = {
     getAll: (req,res) => {
         categoryModel.getAll()
-        .then((result)=> {
-            res.json(result)
+        .then((result)=>{
+            response.success(res,result,"Get all Category success")
         })
-        .catch((err)=> {
-            const error = {
-                message:err.message
-            }
-            res.json(error)
+        .catch((err)=>{
+            response.failed(res,[],err.message)
         })
     },
     insert: (req,res) => {
         const body = req.body
         categoryModel.insert(body)
-        .then((result)=> {
-            res.json(result)
+        .then((result)=>{
+            response.success(res,result,"Add Category success")
         })
-        .catch((err)=> {
-            const error = {
-                message:err.message
-            }
-            res.json(error)
+        .catch((err)=>{
+            response.failed(res,[],err.message)
         })
     }
 }

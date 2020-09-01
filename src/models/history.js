@@ -3,7 +3,7 @@ const db = require('../configs/db')
 const history = {
     getAll: () => {
         return new Promise((resolve,reject) => {
-            db.query(`select * from history`,(err,result)=> {
+            db.query(`select history.id , history.invoice , cashier.cashier_name , history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id`,(err,result)=> {
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -25,7 +25,7 @@ const history = {
     },
     addHistory: (data) => {
         return new Promise((resolve,reject) => {
-            db.query(`insert into history (invoice,cashier,amount)values('${data.invoice}','${data.cashier}','${data.amount}')`,(err,result)=> {
+            db.query(`insert into history (invoice,cashier_id,amount)values('${data.invoice}','${data.cashier}','${data.amount}')`,(err,result)=> {
                 if(err){
                     reject(new Error(err))
                 }else{

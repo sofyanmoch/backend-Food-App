@@ -3,7 +3,7 @@ const response = require('../helpers/response')
 
 const produks = {
     getAll: (req,res) => {
-        const nama = req.query.nama
+        const nama = !req.query.nama ? "" : req.query.nama
         produksModel.getAll(nama)
         .then((result)=>{
             response.success(res,result,"Get all produks success")
@@ -16,26 +16,20 @@ const produks = {
         const id = req.params.id_produks
         produksModel.getDetail(id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Get detail produks success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     addProduk: (req,res) => {
         const body = req.body
         produksModel.addProduk(body)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Add produks produks success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     update: (req,res) => {
@@ -43,26 +37,20 @@ const produks = {
         const id = req.params.id_produks
         produksModel.update(body,id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Update produks success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     },
     delete: (req,res) => {
         const id = req.params.id_produks
         produksModel.delete(id)
         .then((result)=>{
-            res.json(result)
+            response.success(res,result,"Delete produks success")
         })
         .catch((err)=>{
-            const error = {
-                message: err.message
-            }
-            res.json(error)
+            response.failed(res,[],err.message)
         })
     }
 }
