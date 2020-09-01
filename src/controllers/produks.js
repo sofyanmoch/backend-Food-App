@@ -4,7 +4,10 @@ const response = require('../helpers/response')
 const produks = {
     getAll: (req,res) => {
         const nama = !req.query.nama ? "" : req.query.nama
-        produksModel.getAll(nama)
+        const limit = !req.query.limit? '':req.query.limit
+        const page = !req.query.page? 1: req.query.page
+        const offset = page ===1 ? 0:(page-1)*limit
+        produksModel.getAll(nama,limit,offset)
         .then((result)=>{
             response.success(res,result,"Get all produks success")
         })
