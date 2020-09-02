@@ -3,23 +3,21 @@ const response = require('../helpers/response')
 
 const produks = {
     getAll: (req,res) => {
+        let {sort,ascDesc} = req.query;
+        if(sort ==="" || sort=== undefined ){
+            sort = "id"
+        }
+        if (ascDesc === "" || ascDesc === undefined) {
+            ascDesc = "ASC";
+          }
         const orders = !req.query.orders ? "" : req.query.orders
         const limit = !req.query.limit? '':req.query.limit
         const page = !req.query.page? 1: req.query.page
         const offset = page ===1 ? 0:(page-1)*limit
-        produksModel.getAll(orders,limit,offset)
+
+        produksModel.getAll(orders,limit,offset,sort,ascDesc)
         .then((result)=>{
             response.success(res,result,"Get all produks success")
-        })
-        .catch((err)=>{
-            response.failed(res,[],err.message)
-        })
-    },
-    getNameProduct: (req,res) => {
-        const name = req.params.name
-        produksModel.getNameProduct(name)
-        .then((result)=>{
-            response.success(res,result,"Search name produks success")
         })
         .catch((err)=>{
             response.failed(res,[],err.message)

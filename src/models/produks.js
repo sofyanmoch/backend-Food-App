@@ -1,21 +1,14 @@
 const db = require('../configs/db')
 
 const produks = {
-    getAll: (orders,limit,offset) => {
+    getAll: (orders,limit,offset,sort,ascDesc) => {
         return new Promise((resolve,reject)=>{
-            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${orders}%' LIMIT ${offset},${limit} `,(err,result) => {
+            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${orders}%' ORDER BY ${sort} ${ascDesc} LIMIT ${offset},${limit} `,(err,result) => {
                 if(err){
                     reject(new Error(err))
                 }else{
                     resolve(result)
                 }  
-            })
-        })
-    },
-    getNameProduct: (name) => {
-        return new Promise((resolve,reject) => {
-            db.query(`SELECT * FROM produk where name LIKE "%${name}%" `,(err,result) => {
-                !err?resolve(result):reject(new Error(err))
             })
         })
     },
