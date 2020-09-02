@@ -1,9 +1,9 @@
 const db = require('../configs/db')
 
 const produks = {
-    getAll: (orders,limit,offset,sort,ascDesc) => {
+    getAll: (name,limit,offset,sort,ascDesc) => {
         return new Promise((resolve,reject)=>{
-            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${orders}%' ORDER BY ${sort} ${ascDesc} LIMIT ${offset},${limit} `,(err,result) => {
+            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${name}%' ORDER BY ${sort} ${ascDesc} LIMIT ${offset},${limit} `,(err,result) => {
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -37,6 +37,15 @@ const produks = {
                 })
             })
         },
+        updPatch: (data,id) => {
+            return new Promise((resolve,reject)=>{
+                    db.query(`update produk set 
+                    ? where id = ?`, [data,id]
+                    ,(err,result)=>{
+                        !err ? resolve(result) : reject(new Error(err))
+                    })
+                })
+            },
     delete: (id) => {
         return new Promise((resolve,reject)=>{
                 db.query(`delete from produk where id = '${id}'
@@ -44,7 +53,7 @@ const produks = {
                     err ? reject(new Error(err)) : resolve(result)
                 })
             })
-        }
+        }                                                       
 }
 
 module.exports = produks
