@@ -3,7 +3,7 @@ const db = require('../configs/db')
 const history = {
     getAll: () => {
         return new Promise((resolve,reject) => {
-            db.query(`select history.id , history.invoice , cashier.cashier_name , history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id`,(err,result)=> {
+            db.query(`select history.id , history.invoice , cashier.cashier_name, history.orders, history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id`,(err,result)=> {
                 if(err){
                     reject(new Error(err))
                 }else{

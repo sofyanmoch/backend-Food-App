@@ -3,13 +3,23 @@ const response = require('../helpers/response')
 
 const produks = {
     getAll: (req,res) => {
-        const nama = !req.query.nama ? "" : req.query.nama
+        const orders = !req.query.orders ? "" : req.query.orders
         const limit = !req.query.limit? '':req.query.limit
         const page = !req.query.page? 1: req.query.page
         const offset = page ===1 ? 0:(page-1)*limit
-        produksModel.getAll(nama,limit,offset)
+        produksModel.getAll(orders,limit,offset)
         .then((result)=>{
             response.success(res,result,"Get all produks success")
+        })
+        .catch((err)=>{
+            response.failed(res,[],err.message)
+        })
+    },
+    getNameProduct: (req,res) => {
+        const name = req.params.name
+        produksModel.getNameProduct(name)
+        .then((result)=>{
+            response.success(res,result,"Search name produks success")
         })
         .catch((err)=>{
             response.failed(res,[],err.message)
@@ -27,6 +37,7 @@ const produks = {
     },
     addProduk: (req,res) => {
         const body = req.body
+        body.image = req.file.filename
         produksModel.addProduk(body)
         .then((result)=>{
             response.success(res,result,"Add produks produks success")

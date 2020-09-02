@@ -1,9 +1,9 @@
 const db = require('../configs/db')
 
 const produks = {
-   getAll: (nama,limit,offset) => {
+    getAll: (orders,limit,offset) => {
         return new Promise((resolve,reject)=>{
-            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${nama}%' LIMIT ${offset},${limit} `,(err,result) => {
+            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id where name LIKE '%${orders}%' LIMIT ${offset},${limit} `,(err,result) => {
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -12,21 +12,24 @@ const produks = {
             })
         })
     },
+    getNameProduct: (name) => {
+        return new Promise((resolve,reject) => {
+            db.query(`SELECT * FROM produk where name LIKE "%${name}%" `,(err,result) => {
+                !err?resolve(result):reject(new Error(err))
+            })
+        })
+    },
     getDetail: (id) => {
         return new Promise((resolve,reject)=>{
-            db.query(`select produk.id , produk.name , produk.price , categories.category_name ,produk.image from produk INNER JOIN categories ON produk.category_id = categories.id WHERE produk.id = '${id}'`,(err,result) => {
-                if(err){
-                    reject(new Error(err))
-                }else{
-                    resolve(result)
-                }  
+            db.query(`SELECT produk.id , produk.name , produk.price , categories.category_name ,produk.image FROM produk INNER JOIN categories ON produk.category_id = categories.id WHERE produk.id = '${id}'`,(err,result) => {
+                err ? reject(new Error(err)) : resolve(result)
             })
         })
     },
     addProduk: (data) => {
     return new Promise((resolve,reject)=>{
             db.query(`insert into produk (name,price,image,category_id)values('${data.name}','${data.price}','${data.image}','${data.category_id}')`,(err,result)=>{
-                !err ? resolve(result) : reject(new Error(error))
+                err ? reject(new Error(err)) : resolve(result)
             })
         })
     },
@@ -37,18 +40,18 @@ const produks = {
                 price='${data.price}',
                 image='${data.image}',category_id='${data.category_id}' where id = '${id}'
                 `,(err,result)=>{
-                    !err ? resolve(result) : reject(new Error(error))
+                    !err ? resolve(result) : reject(new Error(err))
                 })
             })
         },
-        delete: (id) => {
-            return new Promise((resolve,reject)=>{
-                    db.query(`delete from produk where id = '${id}'
-                    `,(err,result)=>{
-                        !err ? resolve(result) : reject(new Error(error))
-                    })
+    delete: (id) => {
+        return new Promise((resolve,reject)=>{
+                db.query(`delete from produk where id = '${id}'
+                `,(err,result)=>{
+                    err ? reject(new Error(err)) : resolve(result)
                 })
-            }
+            })
+        }
 }
 
 module.exports = produks

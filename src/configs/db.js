@@ -1,11 +1,19 @@
 const mysql = require('mysql2')
+require('dotenv').config()
 
 const connection = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'food_app'
+    host: process.env.host,
+    user: process.env.user, 
+    database: process.env.database
 })
 
+connection.connect((error) => {
+    if (error) {
+      throw error;
+    }
+    console.log("Connect database");
+  });
+
 module.exports = connection
+
 
