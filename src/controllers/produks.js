@@ -22,18 +22,20 @@ const produks = {
             response.success(res,result,"Get all produks success")
         }) 
     } catch {
-        response.failed(res,[],err.message)
+        response.failed(res,[],'internal server eror')
     }
 },
     getDetail: (req,res) => {
+        try {
         const id = req.params.id_produks
         produksModel.getDetail(id)
         .then((result)=>{
             response.success(res,result,"Get detail produks success")
         })
-        .catch((err)=>{
-            response.failed(res,[],err.message)
-        })
+        
+    } catch {
+            response.failed(res,[],'internal server error')
+        }
     },
     addProduk: (req,res) => {
         const body = req.body
