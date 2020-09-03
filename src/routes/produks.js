@@ -1,6 +1,12 @@
 const express =require('express')
 const produksControllers = require('../controllers/produks')
+const cors = require('cors')
 
+var corsOptions = {
+    origin: 'http://example.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+   
 const upload = require('../helpers/upload')
 const router = express.Router()
 
