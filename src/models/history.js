@@ -1,9 +1,9 @@
 const db = require('../configs/db')
 
 const history = {
-    getAll: () => {
+    getAll: (name,limit,offset,sortby,type) => {
         return new Promise((resolve,reject) => {
-            db.query(`select history.id , history.invoice , cashier.cashier_name, history.orders, history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id`,(err,result)=> {
+            db.query(`select history.invoice , history.orders , cashier.cashier_name, history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id where cashier_name LIKE '%${name}%' ORDER BY ${sortby} ${type} LIMIT ${offset},${limit}`,(err,result)=> {
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -12,9 +12,9 @@ const history = {
             })
         })
     },
-    getDetail: (id) => {
+    getDetail: (invoice) => {
         return new Promise((resolve,reject) => {
-            db.query(`select * from history where id='${id}'`,(err,result)=> {
+            db.query(`select history.invoice , history.orders , cashier.cashier_name, history.amount from history INNER JOIN cashier ON history.cashier_id = cashier.id where history.invoice='${invoice}'`,(err,result)=> {
                 if(err){
                     reject(new Error(err))
                 }else{
@@ -25,35 +25,27 @@ const history = {
     },
     addHistory: (data) => {
         return new Promise((resolve,reject) => {
-            db.query(`insert into history (invoice,cashier_id,amount)values('${data.invoice}','${data.cashier}','${data.amount}')`,(err,result)=> {
-                if(err){
-                    reject(new Error(err))
-                }else{
-                    resolve(result)
-                }
+            db.query(`INSERT INTO history (invoice,cashier_id,amount,orders)VALUES('${data.invoice}','${data.cashier_id}','${data.amount}','${data.orders}')`,(err,result) => {
+                err ? reject(new Error(err)) : resolve(result)
             })
         })
     },
-   update: (data,id) => {
-        return new Promise((resolve,reject) => {
-            db.query(`UPDATE history SET 
-            invoice = '${data.invoice}',
-            cashier = '${data.cashier}',
+   update: (data,invoice) => {
+            return new Promise((resolve,reject)=> {
+                db.query(`update history set 
+            orders = '${data.orders}',
+            cashier_id='${data.cashier_id}',
             amount = '${data.amount}'
-            where id = '${id}'
-            `,(err,result)=>{
-                if(err){
-                    reject(new Error(err))
-                }else{
-                    resolve(result)
-                }
+            where invoice = '${invoice}'`
+            ,(err,result)=>{
+                !err ? resolve(result) : reject(new Error(err))
             })
         })
     },
-    delete: (id) => {
+    delete: (invoice) => {
         return new Promise((resolve,reject) => {
             db.query(`delete from history
-            where id = '${id}'
+            where invoice = '${invoice}'
             `,(err,result)=>{
                 if(err){
                     reject(new Error(err))

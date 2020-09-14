@@ -4,16 +4,16 @@ const response = require('../helpers/response');
 const produks = {
     getAll: (req,res) => {
         try {
-        const sortby = !req.query.sort?'id': req.query.sort
-        const type = !req.query.ascDesc? "ASC" :req.query.ascDesc 
+        const sortby = !req.query.sortby?'id': req.query.sortby
+        const type = !req.query.type? "ASC" :req.query.type 
         const name = !req.query.name ? "" : req.query.name
-        const limit = !req.query.limit? 5 : parseInt(req.query.limit)
+        const limit = !req.query.limit? 10: parseInt(req.query.limit)
         const page = !req.query.page? 1 : parseInt(req.query.page)
         const offset = page ===1 ? 0:(page-1)*limit
         
         produksModel.getAll(name,limit,offset,sortby,type)
         .then((result)=>{
-            response.success(res,result,"Get detail produks success")
+            response.success(res,result,"Get produks success")
         })
     } catch {
         response.failed(res,[],'internal server eror')
@@ -65,7 +65,7 @@ const produks = {
         // if(data.image === ""){
         //     data.image === imgOld
         // }
-        
+
         produksModel.updPatch(data,id)
         .then((result)=>{
             response.success(res,result,"Update produks success")

@@ -5,9 +5,9 @@ const router = express.Router()
 
 router
 .get('/getall', historyControllers.getAll)
-.get('/getdetail/:id_history',historyControllers.getDetail)
+.get('/getdetail/:invoice_history',historyControllers.getDetail)
 .post('/add', historyControllers.addHistory)
-.put('/edit/:id_history', historyControllers.update)
-.delete('/delete/:id_history', historyControllers.delete)
+.put('/edit/:invoice_history', historyControllers.update)
+.delete('/delete/:invoice_history', historyControllers.delete)
 
 module.exports = router

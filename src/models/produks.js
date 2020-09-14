@@ -92,14 +92,7 @@ const produks = {
             })
          })
     },
-
-            // db.query(`UPDATE produk SET 
-            //         ? WHERE id = ?`, [data,id]
-            //         ,(err,result)=>{
-            //             !err ? resolve(result) : reject(new Error(err))
-            //         })
-        
-    delete: (id) => {
+delete: (id) => {
         return new Promise((resolve,reject)=>{
                 db.query(`SELECT * FROM produk where id = ${id}`,(err,result)=>{
                     if(err){
