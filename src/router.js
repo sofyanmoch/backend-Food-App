@@ -6,6 +6,7 @@ const produksRouter = require('./routes/produks')
 const historyRouter = require('./routes/history')
 const categoryRouter = require('./routes/category')
 const usersRouter = require('./routes/users')
+
 //middleware
 router.use('/produks',produksRouter)
 router.use('/history',historyRouter)

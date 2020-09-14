@@ -17,9 +17,12 @@ module.exports = {
         // jwt.verify(token,'privateKey',(err,decoded)
 
         jwt.verify(token,secretKey,(err,decoded) => {
-            if(err){
-                tokenResult(res,[], 'Token salah')
-            }else{
+            if(err && err.name === 'TokenExpiredError'){
+                tokenResult(res,[], 'Token Expired')
+            }else if(err && err.name === 'JsonWebTokenError'){
+                tokenResult(res,[], 'Token Salah')
+            }
+            else{
                 next()
             }
         })
