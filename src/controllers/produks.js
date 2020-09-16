@@ -1,5 +1,8 @@
 const produksModel = require('../models/produks')
 const response = require('../helpers/response');
+const upload = require('../helpers/upload')
+const redis = require('redis')
+const redisClient = redis.createClient()
 
 const produks = {
     getAll: (req,res) => {
@@ -13,6 +16,8 @@ const produks = {
         
         produksModel.getAll(name,limit,offset,sortby,type)
         .then((result)=>{
+            // redisClient('key','value')
+            redisClient.set('produks',JSON.stringify(result))
             response.success(res,result,"Get produks success")
         })
     } catch {
@@ -33,12 +38,27 @@ const produks = {
     },
     addProduk: (req,res) => {
         try{
-        const body = req.body
+            upload.single('image')(req,res,(err) => {
+                // if(err){
+                //     response.failed(res,[],err)
+                // }else 
+                if(err){
+                    if(err.code === 'LIMIT_FILE_SIZE'){
+                        response.failed(res,[],'Ukuran file terlalu besar')
+                    }else{
+                        response.failed(res,[],err)
+                    }
+                }
+                else{
+                    const body = req.body
         body.image = req.file.filename
         produksModel.addProduk(body)
         .then((result)=>{
+            redisClient.del('produks')
             response.success(res,result,"Add produks produks success")
         })
+        }
+    })
     } catch (err){
         response.failed(res,[],err.message)
     }
@@ -50,6 +70,7 @@ const produks = {
         data.image = req.file.filename
         produksModel.update(data,id)
         .then((result)=>{
+            redisClient.del('produks')
             response.success(res,result,"Update produks success")
         })
     } catch(err) {
@@ -68,6 +89,7 @@ const produks = {
 
         produksModel.updPatch(data,id)
         .then((result)=>{
+            redisClient.del('produks')
             response.success(res,result,"Update produks success")
         })
         } catch (err) {
@@ -80,6 +102,7 @@ const produks = {
             const id = req.params.id_produks
         produksModel.delete(id)
         .then((result)=>{
+            redisClient.del('produks')
             response.success(res,result,"Delete produks success")
         })
     } catch (err){
