@@ -10,7 +10,7 @@ const users = {
     },
     login: (data) => {
         return new Promise((resolve,reject)=>{
-                db.query(`SELECT * from users where  email = ?`, data.email,(err,result)=>{
+                db.query(`SELECT * from users where email = ?`, data.email,(err,result)=>{
                     err ? reject(new Error(err)) : resolve(result)
                 })
             })

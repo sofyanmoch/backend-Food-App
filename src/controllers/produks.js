@@ -55,7 +55,7 @@ const produks = {
         produksModel.addProduk(body)
         .then((result)=>{
             redisClient.del('produks')
-            response.success(res,result,"Add produks produks success")
+            response.success(res,result,"Add produks success")
         })
         }
     })

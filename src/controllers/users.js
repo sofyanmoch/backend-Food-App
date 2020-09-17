@@ -32,7 +32,7 @@ const users = {
             if(isMatch){
                 jwt.sign({
                     email:results.email,
-                  }, secretKey, { expiresIn: 360 },
+                  }, secretKey, { expiresIn: 3600 },
                  (err,token) => {
                      if(err){
                          console.log(err)

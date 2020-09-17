@@ -9,16 +9,16 @@ module.exports = {
         redisClient.get('produks',(err,data) => {
             if(data){
                 data = JSON.parse(data)
+        const sortby =  !req.query.sortby?'id': req.query.sortby
         const name = !req.query.name ? null : req.query.name
-        const order = !req.query.order ? "ASC" : req.query.order;
+        const type = !req.query.type ? "ASC" : req.query.type;
         const limit = !req.query.limit ? 4 : parseInt(req.query.limit)
         const page = !req.query.page ? 1 : parseInt(req.query.page)
 
         const startPage = (page -1) * limit
         const lastPage = page * limit
 
-        const sort = _.orderBy(data, [order])
-
+        const sort = _.orderBy(data,[sortby],[type])
         let dataRedis = sort
 
         if(name !== null) {

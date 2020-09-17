@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
    
 const upload = multer({ 
   storage,
-  limits: {fileSize: 100000},
+  limits: {fileSize: 100000}, // byte
   fileFilter(req,file,cb){
     if(file.originalname.match(/\.(jpg|jpeg)\b/)){
       cb(null,true)
