@@ -12,13 +12,13 @@ const produks = {
         const name = !req.query.name ? "" : req.query.name
         const limit = !req.query.limit? 10: parseInt(req.query.limit)
         const page = !req.query.page? 1 : parseInt(req.query.page)
-        const offset = page ===1 ? 0:(page-1)*limit
+        const offset = page === 1 ? 0:(page-1)*limit
         
         produksModel.getAll(name,limit,offset,sortby,type)
         .then((result)=>{
             // redisClient('key','value')
             redisClient.set('produks',JSON.stringify(result))
-            response.success(res,result,"Get produks success")
+            response.success(res,result,"Get produks from db success")
         })
     } catch {
         response.failed(res,[],'internal server eror')
