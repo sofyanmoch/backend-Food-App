@@ -37,7 +37,20 @@ const users = {
                      if(err){
                          console.log(err)
                      }else{
-                        tokenResult(res,{token:token},"Login Success")
+                         const id = results.id
+                         const refreshToken = jwt.sign({id},'REFRESH17')
+                        //  console.log(id)
+                        //  console.log(token)
+                        //  console.log(refreshToken)
+                        usersModel.updRefreshToken(refreshToken,id).then(() => {
+                            const data = {
+                                token:token,
+                                refreshToken: refreshToken
+                            }
+                            tokenResult(res, data,"Login Success")
+                        }).catch((err)=> {
+                            console.log(err)
+                        })
                      }
                  } 
             )

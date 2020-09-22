@@ -2,17 +2,17 @@ const redis = require('redis')
 const {success} = require('./response')
 const redisClient = redis.createClient()
 const _ = require('lodash')
-const { off } = require('../configs/db')
+
 
 module.exports = {
     getAll: (req,res,next) => {
         redisClient.get('produks',(err,data) => {
             if(data){
-                data = JSON.parse(data)
+        data = JSON.parse(data)
         const sortby =  !req.query.sortby?'id': req.query.sortby
         const name = !req.query.name ? null : req.query.name
         const type = !req.query.type ? "ASC" : req.query.type;
-        const limit = !req.query.limit ? 4 : parseInt(req.query.limit)
+        const limit = !req.query.limit ? 9 : parseInt(req.query.limit)
         const page = !req.query.page ? 1 : parseInt(req.query.page)
 
         const startPage = (page -1) * limit
